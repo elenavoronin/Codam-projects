@@ -1,0 +1,115 @@
+Debian is one of the oldest operating systems based on the Linux kernel. 
+
+* 		The student being evaluated should explain to you simply:
+* 		How a virtual machine works. “VM is a computer resource that uses software instead of a physical computer to run programs and deploy apps. One or more virtual “guest” machines run on a physical “host” machine. Each virtual machine runs its own operating system and functions separately from the other VMs, even when they are all running on the same host. This means that, for example, a virtual macOS virtual machine can run on a physical PC.".
+VMs may be deployed to accommodate different levels of processing power needs, to run software that requires a different operating system, or to test applications in a safe, sandboxed environment.
+* 		Their choice of operating system.
+* 		The basic differences between Rocky and Debian.
+* 		The purpose of virtual machines.
+* 		If the evaluated student chose Rocky: what SELinux and DNF are.
+* 		If the evaluated student chose Debian: the difference between aptitude and apt, and what APPArmor is. During the defense, a script must display information all every 10 minutes. Its operation will be checked in detail later. If the explanations are not clear, the evaluation stops here.
+ Yes
+ No
+Simple setup
+Remember: Whenever you need help checking something, the student being evaluated
+should be able to help you.
+* 		Ensure that the machine does not have a graphical environment at launch. A password will be requested before attempting to connect to this machine. Finally, connect with a user with the help of the student being evaluated. This user must not be root. Pay attention to the password chosen, it must follow the rules imposed in the subject.
+* 		Check that the UFW service is started with the help of the evaluator. $sudo ufw status
+* 		Check that the SSH service is started with the help of the evaluator.$sudo systemctl status ssh
+* 		Check that the chosen operating system is Debian or Rocky with the help of the evaluator. If something does not work as expected or is not clearly explained, the evaluation stops here.
+ Yes
+ No
+User
+Remember: Whenever you need help checking something, the student being evaluated
+should be able to help you.
+The subject requests that a user with the login of the student being evaluated is present
+on the virtual machine. Check that it has been added and that it belongs to the
+"sudo" and "user42" groups.
+
+Make sure the rules imposed in the subject concerning the password policy have been put in place by
+following the following steps.
+First, create a new user. Assign it a password of your choice, respecting the subject rules. The
+student being evaluated must now explain to you how they were able to set up the rules requested
+in the subject on their virtual machine.
+Check groups:
+$getent group “group”
+Add users:
+$sudo groupadd “user”
+$sudo groupadd “group name”
+$sudo adduser “name” “group name”
+
+Password check:
+$nano /etc/ssh/sshd_config (ssh file, permit root login)
+$nano /etc/security/pwquality.conf (password)
+$nano /etc/login.defs (pass max days)
+$nano /etc/sudoers (password for sudo)
+Normally there should be one or two modified files. If there is any problem, the evaluation stops here.
+* 		Now that you have a new user, ask the student being evaluated to create a group named "evaluating" in
+* 		front of you and assign it to this user. Finally, check that this user belongs to the "evaluating" group.
+* 		Finally, ask the student being evaluated to explain the advantages of this password policy, as well as the
+* 		advantages and disadvantages of its implementation. Of course, answering that it is because the subject asks
+* 		for it does not count.
+If something does not work as expected or is not clearly explained, the evaluation stops here.
+ Yes
+ No
+Hostname and partitions
+Remember: Whenever you need help checking something, the student being evaluated
+should be able to help you.
+* 		Check that the hostname of the machine is correctly formatted as follows: login42 (login of the student being evaluated). $hostname
+* 		Modify this hostname by replacing the login with yours, then restart the machine. If on restart, the hostname has not been updated, the evaluation stops here.  $hostnamectl set-hostname {name-here} $nano /etc/hosts $sudo reboot
+* 		You can now restore the machine to the original hostname.
+* 		Ask the student being evaluated how to view the partitions for this virtual machine.$lsblk
+* 		Compare the output with the example given in the subject. Please note: if the student evaluated makes the bonuses, it will be necessary to refer to the bonus example.
+This part is an opportunity to discuss the scores! The student being evaluated should
+give you a brief explanation of how LVM works and what it is all about.
+LVM - "It is a system of managing logical volumes, or filesystems, that is much more advanced and flexible than the traditional method of partitioning a disk into one or more segments and formatting that partition with a filesystem.".
+If something does not work as expected or is not clearly explained,
+the evaluation stops here.
+ Yes
+ No
+SUDO
+Remember: Whenever you need help checking something, the student being evaluated
+should be able to help you.
+Sudo is a Linux program meant to allow a user to use root privileges for a limited timeframe to users and log root activity.  The basic thought is to give as few privileges as possible to a user while allowing  the user to accomplish a task. The term “Sudo” means substitute user, and do. It is a program used for managing of user permission based on a system configuration file. It allows users to run programs with the privileges of another user, by default, the superuser. The program is supplied for most UNIX and Linux-based operating systems.
+Default secure_path: This setting indicates the ‘Path’ to be used for every command run from sudo. If we do not explicitly trust the users running sudo, we can use this variable to have an alternate PATH environment variable which limits.
+
+* The first ALL is the users allowed to use the sudo command. 
+* The second ALL defines the hosts (servers) on which sudo can be employed. The third ALL is the user you are running the command as.
+* The last ALL defines the commands allowed.
+* 		Check that the "sudo" program is properly installed on the virtual machine.
+* 		The student being evaluated should now show assigning your new user to the "sudo" group.
+* 		The subject imposes strict rules for sudo. The student being evaluated must first explain the value and operation of sudo using examples of their choice. In a second step, it must show you the implementation of the rules imposed by the subject.
+* 		Verify that the "/var/log/sudo/" folder exists and has at least one file. Check the contents of the files in this folder, You should see a history of the commands used with sudo. Finally, try to run a command via sudo. See if the file (s) in the "/var/log/sudo/" folder have been updated. If something does not work as expected or is not clearly explained, the evaluation stops here.
+ Yes
+ No
+UFW / Firewall
+Remember: Whenever you need help checking something, the student being evaluated
+should be able to help you.
+* 		Check that the "UFW" (or "Firewalld" for rocky) program is properly installed on the virtual machine. $sudo ufw status
+* 		Check that it is working properly.
+* 		The student being evaluated should explain to you basically what UFW (or Firewalld) is and the value of using it.
+* 
+* 		List the active rules in UFW (or Firewalld). A rule must exist for port 4242.
+* 		Add a new rule to open port 8080. Check that this one has been added by listing the active rules. $sudo ufw allow “port name” 
+* 		Finally, delete this new rule with the help of the student being evaluated. If something does not work as expected or is not clearly explained, the evaluation stops here. $ sudo ufw delete “port name” 
+ Yes
+ No
+SSH
+Remember: Whenever you need help checking something, the student being evaluated
+should be able to help you.
+* 		Check that the SSH service is properly installed on the virtual machine.
+SSH, also known as Secure Shell or Secure Socket Shell, is a network protocol that gives users, particularly system administrators, a secure way to access a computer over an unsecured network.
+* 		Check that it is working properly.
+* 		The student being evaluated must be able to explain to you basically what SSH is and the value of using it. UFW (Uncomplicated Firewall) is a software application responsible for ensuring that the system administrator can manage iptables in a simple way. Since it is very difficult to work with iptables, UFW provides us with an interface to modify the firewall of our device (netfilter) without compromising security. Once we have UFW installed, we can choose which ports we want to allow connections, and which ports we want to close. This will also be very useful with SSH, greatly improving all security related to communications between devices.
+
+* 		Verify that the SSH service only uses port 4242. $sudo nano /etc/ssh/sshd_config
+* 		The student being evaluated should help you use SSH in order to log in with the newly created user. To do this, you can use a key or a simple password. It will depend on the student being evaluated. Of course, you have to make sure that you cannot use SSH with the "root" user as stated in the subject. If something does not work as expected or is not clearly explained, the evaluation stops here. $ssh username@127.0.0.1 -p 4242 (log in through shell) $exit
+ Yes
+ No
+Script monitoring
+Remember: Whenever you need help checking something, the student being evaluated
+should be able to help you.
+The student being evaluated should explain to you simply:
+* 		How their script works by showing you the code. cd /usr/local/bin
+* 		What "cron" is. CRON is a scheduling tool. $sudo crontab -e
+* 		How the student being evaluated set up their script so that it runs every 10 minutes from when the server starts. Once the correct functioning of the script has been verified, the student being evaluated should ensure that this script runs every minute. You can run whatever you want to make sure the script runs with dynamic values correctly. Finally, the student being evaluated should make the script stop running when the server has started up, but without modifying the script itself. To check this point, you will have to restart the server one last time. At startup, it will be necessary to check that the script still exists in the same place, that its rights have remained unchanged, and that it has not been modified. If something does not work as expected or is not clearly explained, the evaluation stops here.
